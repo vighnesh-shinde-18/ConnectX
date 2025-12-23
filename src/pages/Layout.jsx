@@ -9,7 +9,7 @@ import {
 export default function Layout({ children, selectedChat,setSelectedChat }) {
   return (
     <SidebarProvider style={{ "--sidebar-width": "350px" }}>
-      <AppSidebar setSelectedChat={setSelectedChat} />
+      <AppSidebar setSelectedChat={setSelectedChat} selectedChat={selectedChat} />
 
       {/* SidebarInset is the main container */}
       <SidebarInset className="flex flex-col h-screen overflow-hidden">

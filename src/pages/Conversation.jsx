@@ -7,11 +7,7 @@ import {
   ConversationScrollButton,
 } from "@/components/ai-elements/conversation.jsx";
 
-import {
-  Message,
-  MessageContent,
-} from "@/components/ai-elements/message.jsx";
-
+ 
 import { MessageSquareIcon, CheckCheck, CheckIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -44,7 +40,7 @@ const ConversationPage = ({ selectedChat }) => {
 
   return (
     <Conversation className="h-full overflow-hidden bg-muted/30">
-      <ConversationContent className="p-4 space-y-3">
+      <ConversationContent>
         {messages.length === 0 ? (
           <ConversationEmptyState
             title="Start a conversation"
@@ -59,7 +55,7 @@ const ConversationPage = ({ selectedChat }) => {
           messages.map((msg) => {
             const isMine = msg.senderId === user.uid;
             const time = formatTime(msg.createdAt);
-            const isSeen = isMine && msg.seenAt;
+            const isSeen = isMine && msg.seen;
 
             return (
               <div
@@ -78,9 +74,7 @@ const ConversationPage = ({ selectedChat }) => {
                     <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
                       {msg.text}
                     </p>
-                  </div>
-
-                  {/* META INFO */}
+                  </div> 
                   <div
                     className={`mt-1 flex items-center gap-1 text-[11px] text-muted-foreground ${
                       isMine ? "justify-end pr-1" : "justify-start pl-1"

@@ -36,7 +36,7 @@ const Login = () => {
             const user = await authServices.loginWithGoogle();
             await saveUserProfile(user)
             toast.success("Login Successful! Redirect To Dashboard...", { id: toastId });
-            navigate("/dashboard")
+            navigate("/chat-list")
         } catch (error) {
             console.log(error.message)
             toast.error(error.message, { id: toastId });

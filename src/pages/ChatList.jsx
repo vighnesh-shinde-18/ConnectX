@@ -17,7 +17,7 @@ export default function ChatList() {
           <ConversationPage selectedChat={selectedChat} />
         </div>
         <div className="shrink-0 border-t bg-background">
-          <MessageInput />
+         <MessageInput selectedChat={selectedChat} />
         </div>
       </div>
     </Layout>

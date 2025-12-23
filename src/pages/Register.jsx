@@ -37,7 +37,7 @@ const Register = () => {
       const user = await loginWithGoogle();
       await saveUserProfile(user)
       toast.success("Login Successful! Redirect To Dashboard...", { id: toastId });
-      navigate("/dashboard")
+      navigate("/chat-list")
     } catch (err) {
       setError(err.message);
     }
