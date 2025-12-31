@@ -42,7 +42,7 @@ const Hero = () => {
                 <div className="flex flex-col gap-4 sm:flex-row">
                     {/* 👇 FIXED: Wrapped in () => ... */}
                     <button 
-                        onClick={() => navigate("/login")} 
+                        onClick={() => navigate("/chat-list")} 
                         className="cursor-pointer inline-flex h-12 items-center justify-center rounded-md bg-black px-8 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
                     >
                         Start Chatting Now

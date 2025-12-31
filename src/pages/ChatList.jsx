@@ -7,7 +7,8 @@ export default function ChatList() {
   const [selectedChat, setSelectedChat] = useState({
     name: "",
     email: "",
-    id:""
+    id:"",
+    uid:""
   });
 
   return (

@@ -30,14 +30,6 @@ export const saveUserProfile = async (user) => {
 };
 
 
-export const setUserOffline = async (uid) => {
-  const userRef = doc(db, "users", uid);
-  await updateDoc(userRef, {
-    isOnline: false,
-    lastSeen: serverTimestamp(),
-  });
-};
-
 
 export const getUserById = async (uid) => {
   const ref = doc(db, "users", uid);

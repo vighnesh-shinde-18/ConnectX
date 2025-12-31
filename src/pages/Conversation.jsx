@@ -7,7 +7,11 @@ import {
   ConversationScrollButton,
 } from "@/components/ai-elements/conversation.jsx";
 
- 
+import {
+  Message,
+  MessageContent,
+} from "@/components/ai-elements/message";
+
 import { MessageSquareIcon, CheckCheck, CheckIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -16,7 +20,8 @@ import { useAuth } from "@/context/AuthContext";
 
 const formatTime = (timestamp) => {
   if (!timestamp) return "";
-  return timestamp.toDate().toLocaleTimeString([], {
+  const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
+  return date.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -40,7 +45,7 @@ const ConversationPage = ({ selectedChat }) => {
 
   return (
     <Conversation className="h-full overflow-hidden bg-muted/30">
-      <ConversationContent>
+      <ConversationContent className="flex flex-col gap-4 p-4">
         {messages.length === 0 ? (
           <ConversationEmptyState
             title="Start a conversation"
@@ -60,32 +65,92 @@ const ConversationPage = ({ selectedChat }) => {
             return (
               <div
                 key={msg.id}
-                className={`flex ${isMine ? "justify-end" : "justify-start"}`}
+                className={`flex w-full ${isMine ? "justify-end" : "justify-start"}`}
               >
-                <div className="max-w-[75%]">
-                  {/* MESSAGE BUBBLE */}
+                <Message
+                  from={isMine ? "user" : "assistant"}
+                  className="max-w-[80%] sm:max-w-[70%]"
+                >
+                  
+                  {/* MEDIA CONTENT */}
+                  <div className={`flex flex-col gap-2 ${isMine ? "items-end" : "items-start"}`}>
+                    {msg.attachments?.map((file, idx) => {
+                      
+                      // FIX: Guard clause. 
+                      // If the file object is empty or doesn't have a URL, render nothing.
+                      if (!file || !file.url) return null;
+
+                      if (file.type === "image") {
+                        return (
+                          <img
+                            key={idx}
+                            src={file.url}
+                            alt="Shared image"
+                            className="rounded-lg min-w-sm max-h-52 object-cover border shadow-sm"
+                          />
+                        );
+                      }
+                      
+                      if (file.type === "video") {
+                        return (
+                          <video
+                            key={idx}
+                            src={file.url}
+                            controls
+                            className="rounded-lg border max-w-sm h-auto shadow-sm"
+                          />
+                        );
+                      }
+                      
+                      // Fallback: If it has a URL but isn't Image/Video, treat as File/Link
+                      return (
+                        <div 
+                          key={idx}
+                          className={`p-2 w-fit min-w-[120px] rounded-md border ${
+                            isMine
+                              ? "bg-primary-foreground/10 self-end"
+                              : "bg-muted self-start"
+                          }`}
+                        >
+                          <a
+                            href={file.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-blue-500 text-sm no-underline"
+                          >
+                            <span className="shrink-0">📎</span>
+                            <span className="truncate">{file.name || "Open file"}</span>
+                          </a>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* TEXT CONTENT */}
+                  {msg.text && (
+                    <MessageContent>
+                      <p className="whitespace-pre-wrap break-words text-sm">
+                        {msg.text}
+                      </p>
+                    </MessageContent>
+                  )}
+
+                  {/* METADATA */}
                   <div
-                    className={`rounded-2xl px-4 py-2 shadow-sm ${
-                      isMine
-                        ? "bg-primary text-primary-foreground rounded-br-md"
-                        : "bg-background border rounded-bl-md"
-                    }`}
-                  >
-                    <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
-                      {msg.text}
-                    </p>
-                  </div> 
-                  <div
-                    className={`mt-1 flex items-center gap-1 text-[11px] text-muted-foreground ${
-                      isMine ? "justify-end pr-1" : "justify-start pl-1"
+                    className={`mt-1 flex items-center gap-1 text-[10px] opacity-70 ${
+                      isMine ? "justify-end" : "justify-start"
                     }`}
                   >
                     <span>{time}</span>
-                    {isMine && ( isSeen?(
-                      <CheckCheck className="h-3.5 w-3.5 text-blue-500" />
-                    ):(<CheckIcon className="h-3.5 w-3.5 text-blue-500" />))}
+                    {isMine && (
+                      isSeen ? (
+                        <CheckCheck className="h-3 w-3 text-blue-500" />
+                      ) : (
+                        <CheckIcon className="h-3 w-3" />
+                      )
+                    )}
                   </div>
-                </div>
+                </Message>
               </div>
             );
           })
