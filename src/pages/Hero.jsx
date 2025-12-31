@@ -36,7 +36,7 @@ const Hero = () => {
 
                 <p className="mb-10 max-w-2xl text-lg text-slate-600 md:text-xl dark:text-slate-400">
                     The ultimate <strong>Realtime Chat App</strong> designed for speed and security.
-                    Connect instantly with friends, share files, and enjoy AI-powered conversations without boundaries.
+                    Connect instantly with friends, share files, and enjoy Realtime conversations without boundaries.
                 </p>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
